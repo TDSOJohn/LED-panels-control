@@ -14,3 +14,4 @@ Use any HUB12 display with DMX control.
 | 1 | speed (slow to high) |
 | 2 | pattern |
 | 3 | reset / control |
+| 4 | Play / Pause |
