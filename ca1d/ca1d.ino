@@ -63,7 +63,7 @@ uint8_t restart_timer = 0;
 void loop() {
   unsigned long lastPacket = DMXSerial.noDataSince();
   
-  speed = (DMXSerial.read(startChannel) + 5) * 5;
+  speed = 1320 - (DMXSerial.read(startChannel) + 5) * 5;
   uint8_t ch2_read = DMXSerial.read(startChannel + 1);
   if(ch2_read < 64)
     CURRENT_RULE = 30;
