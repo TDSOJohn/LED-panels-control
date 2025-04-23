@@ -1,6 +1,12 @@
-## DMX LED driver
+# DMX HUB12 LED driver
 
-Use any HUB12 display with DMX control. Schematics are compatible with Arduino nano and 5V power supply.
+Use any HUB12 display with DMX control.
+
+### Schematics
+
+The board is a simple Arduino Nano --> HUB12 adapter with DMX input using the SN75176 differential bus transciver.
+XLR 3 pin is used for DMX input.
+The power supply is +5V via screw terminals.
 
 ### Dependencies
 
