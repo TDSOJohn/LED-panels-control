@@ -1,6 +1,6 @@
 ## DMX LED driver
 
-Use any HUB12 display with DMX control.
+Use any HUB12 display with DMX control. Schematics are compatible with Arduino nano and 5V power supply.
 
 ### Dependencies
 
