@@ -1,15 +1,24 @@
+#include <FastLED.h>
 #include <DMD2.h>
 #include <SPI.h>
-#include <fonts/Arial14.h>
+
+// How many leds in your strip?
+#define NUM_LEDS 44
+
+#define DATA_PIN 4
 
 
-#define DISPLAYS_WIDE 2
+// Define the array of leds
+CRGB leds[NUM_LEDS];
+
+#define DISPLAYS_WIDE 1
 #define DISPLAYS_HIGH 1
 
 #define ROW_LENGTH 64
 
 SoftDMD dmd(DISPLAYS_WIDE, DISPLAYS_HIGH);
 DMDFrame frame(64, 16);
+
 
 uint8_t RULE = 30;
 uint8_t DATA[ROW_LENGTH * 2];
@@ -18,8 +27,7 @@ uint8_t* current_cell_states;
 uint8_t* next_cell_states;
 uint8_t* temp;
 
-int speed = 60;
-
+int speed = 100;
 
 int stateBasedOnNeighbors(int rule, int left, int center, int right) {
   return(rule >> (left << 2 | center << 1 | right)) & 1;
@@ -36,21 +44,38 @@ void setStartingValues(bool rand_start) {
   }
 }
 
+
 void setup() {
-  dmd.setBrightness(20);
+
+  dmd.setBrightness(30);
   dmd.begin();
 
   current_cell_states = DATA;
   next_cell_states = DATA + ROW_LENGTH;
 
   setStartingValues(true);
+  // Uncomment/edit one of the following lines for your leds arrangement.
+  // ## Clockless types ##
+  FastLED.addLeds<WS2815, DATA_PIN>(leds, NUM_LEDS);  // GRB ordering is assumed
+
+  for(int i = 0; i < NUM_LEDS; i++)
+    leds[i] = CRGB::Black;
 }
+
+int current = 0;
 
 uint8_t row_to_update = 0;
 
-uint8_t message_counter = 0;
+uint8_t restart_timer = 0;
 
 void loop() {
+  leds[current] = CRGB::DarkSeaGreen;
+  FastLED.show();
+  delay(speed);
+  leds[current] = CRGB::Black;
+  current += 1;
+  current = current % 44;
+
   if(row_to_update == 15)
     frame.scrollY(-1);
 
