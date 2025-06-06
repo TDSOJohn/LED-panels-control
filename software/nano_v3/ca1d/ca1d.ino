@@ -37,7 +37,7 @@ void setStartingValues(bool rand_start) {
 }
 
 void setup() {
-  dmd.setBrightness(20);
+  dmd.setBrightness(5);
   dmd.begin();
 
   current_cell_states = DATA;
@@ -65,14 +65,14 @@ void loop() {
     next_cell_states[i] = stateBasedOnNeighbors(RULE, left, curr, right);
   }
 
-  dmd.copyFrame(frame, 0, 0);
-
   temp = current_cell_states;
   current_cell_states = next_cell_states;
   next_cell_states = temp;
 
   if(row_to_update < 15)
     row_to_update++;
+
+  dmd.copyFrame(frame, 0, 0);
 
   delay(speed);
 }
