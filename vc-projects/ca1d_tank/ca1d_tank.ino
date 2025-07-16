@@ -80,9 +80,9 @@ void setup() {
   current_cell_states = DATA;
   next_cell_states = DATA + ROW_LENGTH;
 
-  setStartingValues(true);
-
   randomSeed(analogRead(A0));
+
+  setStartingValues(true);
   generateRandData();
 }
 
@@ -130,11 +130,20 @@ void loop() {
       corrupt_frame(text_frame);
     }
     if(artist_counter == 0)
-      text_frame.drawString(0, 1, " Simi.", DMDGraphicsMode::GRAPHICS_XOR);
+      text_frame.drawString(0, 1, " DJ MASDA", DMDGraphicsMode::GRAPHICS_XOR);
     if(artist_counter == 1)
-      text_frame.drawString(0, 1, " Sixam", DMDGraphicsMode::GRAPHICS_XOR);
+      text_frame.drawString(0, 1, " HIRAKU", DMDGraphicsMode::GRAPHICS_XOR);
     if(artist_counter == 2)
-      text_frame.drawString(0, 1, "Luca Gentile", DMDGraphicsMode::GRAPHICS_XOR);
+      text_frame.drawString(0, 1, "PIERMATTEI", DMDGraphicsMode::GRAPHICS_XOR);
+    if(artist_counter == 3)
+      text_frame.drawString(0, 1, " ROND", DMDGraphicsMode::GRAPHICS_XOR);
+    if(artist_counter == 4)
+      text_frame.drawString(0, 1, " SNDCRFT", DMDGraphicsMode::GRAPHICS_XOR);
+    if(artist_counter == 5)
+      text_frame.drawString(0, 1, " KEVAN", DMDGraphicsMode::GRAPHICS_XOR);
+    if(artist_counter == 6)
+      text_frame.drawString(0, 1, " 2VIBES", DMDGraphicsMode::GRAPHICS_XOR);
+
     dmd.copyFrame(text_frame, 0, 0);
     delay(data.delay_time * 1.3);
     text_frame.clearScreen();
@@ -144,7 +153,7 @@ void loop() {
       current_mode = Mode::CA;
       generateRandData();
       artist_counter++;
-      artist_counter = artist_counter % 3;
+      artist_counter = artist_counter % 7;
     }
   }
 
