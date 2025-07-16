@@ -4,9 +4,6 @@
 
 #include <SPI.h>
 #include <DMD2.h>
-#include <fonts/SystemFont5x7.h>
-#include <fonts/Arial_Black_16.h>
-#include <fonts/Arial14.h>
 
 // Set Width to the number of displays wide you have
 const int WIDTH = 2;
