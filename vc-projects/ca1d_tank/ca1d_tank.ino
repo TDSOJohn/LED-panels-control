@@ -1,3 +1,14 @@
+/*
+    A0 = 0 --> NAME CHANGES
+    A0 = 1 --> FIXED NAME
+       |   --> bin(A1, A2, A3) = name[1..7]
+
+
+
+
+*/
+
+
 #include <DMD2.h>
 #include <SPI.h>
 #include <fonts/Arial14.h>
@@ -72,6 +83,9 @@ void corrupt_frame(DMDFrame& frame) {
   delay(random(200));
 }
 
+uint8_t fixed_name = false;
+uint8_t artist_counter = 0;
+
 void setup() {
   dmd.setBrightness(5);
   text_frame.selectFont(Arial14);
@@ -84,12 +98,24 @@ void setup() {
 
   setStartingValues(true);
   generateRandData();
+
+  for(int i = A0; i <= A5; i++)
+    pinMode(i, INPUT_PULLUP);
+  delay(50);
+  
+  fixed_name = !digitalRead(A0);
+  delay(20);
+  artist_counter += (!digitalRead(A3)) * 4;
+  delay(20);
+  artist_counter += (!digitalRead(A2)) * 2;
+  delay(20);
+  artist_counter += (!digitalRead(A1));
+  delay(20);
 }
 
 uint8_t row_to_update = 0;
 
 int counter = 0;
-int artist_counter = 0;
 
 void loop() {
   counter++;
@@ -152,8 +178,10 @@ void loop() {
       counter = 0;
       current_mode = Mode::CA;
       generateRandData();
-      artist_counter++;
-      artist_counter = artist_counter % 7;
+      if (fixed_name == false) {
+        artist_counter++;
+        artist_counter = artist_counter % 7;
+      }
     }
   }
 
