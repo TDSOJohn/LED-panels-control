@@ -2,10 +2,6 @@
     A0 = 0 --> NAME CHANGES
     A0 = 1 --> FIXED NAME
        |   --> bin(A1, A2, A3) = name[1..7]
-
-
-
-
 */
 
 
@@ -49,6 +45,11 @@ RandData data;
 
 Mode current_mode = Mode::CA;
 
+uint8_t fixed_name = false;
+const uint8_t num_of_artists = 7;
+String artists[num_of_artists] = {" DJ MASDA", " HIRAKU", "PIERMATTEI", " ROND", " SNDCRFT", " KEVAN", " 2VIBES"};
+uint8_t artist_counter = 0;
+
 
 int stateBasedOnNeighbors(int rule, int left, int center, int right) {
   return(rule >> (left << 2 | center << 1 | right)) & 1;
@@ -82,9 +83,6 @@ void corrupt_frame(DMDFrame& frame) {
   }
   delay(random(200));
 }
-
-uint8_t fixed_name = false;
-uint8_t artist_counter = 0;
 
 void setup() {
   dmd.setBrightness(5);
@@ -135,9 +133,9 @@ void loop() {
       next_cell_states[i] = stateBasedOnNeighbors(RULE, left, curr, right);
     }
 
-    temp = current_cell_states;
+//    temp = current_cell_states;
     current_cell_states = next_cell_states;
-    next_cell_states = temp;
+//    next_cell_states = temp;
 
     if(row_to_update < 15)
       row_to_update++;
@@ -150,30 +148,20 @@ void loop() {
       current_mode = Mode::NAME_STROBE;
       generateRandData();
     }
+    delay(data.delay_time);
   } else {
     // TEXT STROBE
     if(random(100) < data.corruption_prob) {
       corrupt_frame(text_frame);
     }
-    if(artist_counter == 0)
-      text_frame.drawString(0, 1, " DJ MASDA", DMDGraphicsMode::GRAPHICS_XOR);
-    if(artist_counter == 1)
-      text_frame.drawString(0, 1, " HIRAKU", DMDGraphicsMode::GRAPHICS_XOR);
-    if(artist_counter == 2)
-      text_frame.drawString(0, 1, "PIERMATTEI", DMDGraphicsMode::GRAPHICS_XOR);
-    if(artist_counter == 3)
-      text_frame.drawString(0, 1, " ROND", DMDGraphicsMode::GRAPHICS_XOR);
-    if(artist_counter == 4)
-      text_frame.drawString(0, 1, " SNDCRFT", DMDGraphicsMode::GRAPHICS_XOR);
-    if(artist_counter == 5)
-      text_frame.drawString(0, 1, " KEVAN", DMDGraphicsMode::GRAPHICS_XOR);
-    if(artist_counter == 6)
-      text_frame.drawString(0, 1, " 2VIBES", DMDGraphicsMode::GRAPHICS_XOR);
 
+    text_frame.drawString(0, 1, artists[artist_counter], DMDGraphicsMode::GRAPHICS_XOR);
     dmd.copyFrame(text_frame, 0, 0);
     delay(data.delay_time * 1.3);
+
     text_frame.clearScreen();
     dmd.copyFrame(text_frame, 0, 0);
+
     if(counter >= data.cycles / 3) {
       counter = 0;
       current_mode = Mode::CA;
@@ -183,7 +171,6 @@ void loop() {
         artist_counter = artist_counter % 7;
       }
     }
+    delay(data.delay_time);
   }
-
-  delay(data.delay_time);
 }
