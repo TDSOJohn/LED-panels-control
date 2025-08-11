@@ -45,6 +45,7 @@ RandData data;
 
 Mode current_mode = Mode::CA;
 
+uint8_t artist_names = false;
 uint8_t fixed_name = false;
 const uint8_t num_of_artists = 7;
 String artists[num_of_artists] = {" DJ MASDA", " HIRAKU", "PIERMATTEI", " ROND", " SNDCRFT", " KEVAN", " 2VIBES"};
@@ -133,9 +134,9 @@ void loop() {
       next_cell_states[i] = stateBasedOnNeighbors(RULE, left, curr, right);
     }
 
-//    temp = current_cell_states;
+    temp = current_cell_states;
     current_cell_states = next_cell_states;
-//    next_cell_states = temp;
+    next_cell_states = temp;
 
     if(row_to_update < 15)
       row_to_update++;
@@ -145,7 +146,10 @@ void loop() {
   
     if(counter >= data.cycles) {
       counter = 0;
-      current_mode = Mode::NAME_STROBE;
+      if(artist_names)
+        current_mode = Mode::NAME_STROBE;
+      else
+        current_mode = Mode::CA;
       generateRandData();
     }
     delay(data.delay_time);
